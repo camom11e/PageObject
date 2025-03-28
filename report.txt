@@ -1,0 +1,2 @@
+Пройденные тесты:
+- tests/test_registration.py::test_registration

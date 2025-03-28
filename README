@@ -1,0 +1,4 @@
+1.Регистрациия на сайте https://sibkofe.ru/
+тест регистарция записан в файл test_main_page_registration.py
+2.Вход и авторизация на сайте https://sibkofe.ru/
+тест регистарция записан в файл test_main_page_exit_to.py
