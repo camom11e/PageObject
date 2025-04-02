@@ -1,6 +1,6 @@
 import pytest
 from selenium import webdriver
-from pages.main_page import MainPage
+from ..pages.main_page import MainPage
 import time
 
 @pytest.fixture
@@ -29,4 +29,7 @@ def test_registration(browser, user_data):
     register_modal = main_page.open_registration_modal()
     register_modal.fill_form(user_data)
     
+
+
+
     assert "успешно" in browser.page_source.lower()

@@ -1,2 +1,2 @@
 Пройденные тесты:
-- tests/test_registration.py::test_registration
+- tests/test_authorization.py::test_authorization

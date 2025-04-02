@@ -3,9 +3,9 @@ import pytest
 @pytest.fixture
 def login_data():
     return {
-        "email": "test123@example.com",  # Замените на реальный email
-        "password": "Password123!"   # Замените на реальный пароль
-    }
+        "email": "test123@example.com",  
+        "password": "Password123!"
+        }
 
 def pytest_terminal_summary(terminalreporter):
     passed = terminalreporter.stats.get('passed', [])
@@ -20,3 +20,10 @@ def pytest_terminal_summary(terminalreporter):
             f.write("\nПроваленные тесты:\n")
             for test in failed:
                 f.write(f"- {test.nodeid}\n")
+
+def pytest_addoption():
+    pass
+#фикстура
+def jira_client(request):
+    if request.config.getoption("jira"):
+        pass
