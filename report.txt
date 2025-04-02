@@ -1,2 +1,0 @@
-Пройденные тесты:
-- tests/test_authorization.py::test_authorization
