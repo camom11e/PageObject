@@ -1,6 +1,6 @@
 from .base_page import BasePage
 from .authorization_form import AuthorizationForm
-from .register_modal import RegisterModal
+from .register_form import RegisterModal
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 

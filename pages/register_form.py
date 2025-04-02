@@ -30,3 +30,5 @@ class RegisterModal(BasePage):
             except TimeoutException:
                 print(f"Element {locator[1]} not found!")
                 raise
+
+
