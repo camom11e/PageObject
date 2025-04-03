@@ -1,4 +1,6 @@
 import pytest
+from selenium import webdriver
+
 
 @pytest.fixture
 def login_data():
@@ -6,6 +8,15 @@ def login_data():
         "email": "test123@example.com",  
         "password": "Password123!"
         }
+
+@pytest.fixture
+def browser():
+    driver = webdriver.Chrome()
+    driver.implicitly_wait(10)
+    yield driver
+    driver.quit()
+
+
 
 def pytest_terminal_summary(terminalreporter):
     passed = terminalreporter.stats.get('passed', [])

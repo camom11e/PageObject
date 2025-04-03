@@ -1,13 +1,7 @@
 import pytest
-from selenium import webdriver
 from ..pages.main_page import MainPage
 
-@pytest.fixture
-def browser():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(10)
-    yield driver
-    driver.quit()
+
 
 @pytest.fixture
 def user_data():
@@ -24,4 +18,10 @@ def test_authorization(browser, user_data):
     authorization_form.fill_form(user_data)
     authorization_form.push_button_login()
 
-    assert "успешно" in browser.page_source.lower()
+
+    try:
+        assert "личный кабинет"  in browser.page_source.lower()
+    except AssertionError as e:
+        print("у вас ошибка")
+        raise e
+    
