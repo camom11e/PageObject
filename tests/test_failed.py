@@ -1,11 +1,19 @@
 import pytest
 from ..pages.main_page import MainPage
 from jira import JIRA
-import conftest
+import os
+from dotenv import load_dotenv
+from datetime import datetime
+
+load_dotenv(override=True)
+
+JIRA_SERVER = os.getenv("JIRA_WEBSIDE")
+JIRA_USERNAME = os.getenv("JIRA_EMAIL")
+JIRA_API_KEY = os.getenv("JIRA_API_TOKEN")
 
 jira = JIRA(
-    server=conftest.JIRA_SERVER,
-    basic_auth=(conftest.JIRA_USERNAME, conftest.JIRA_API_KEY)
+    server=JIRA_SERVER,
+    basic_auth=(JIRA_USERNAME, JIRA_API_KEY)
 )
 def test_failed(browser):
     main_page = MainPage(browser)
@@ -24,7 +32,7 @@ def test_failed(browser):
             {
                 "project": {"key": "SEL"},
                 "summary": "Задача тестовая",
-                "description": f"Ошибка Проверка JIRA\n\nДата:  {datetime.datetime.now()}",
+                "description": f"Проверка JIRA\n\nДата:  {datetime.now()}",
                 "issuetype": {"id": "10038"}
             }
         )
