@@ -1,40 +1,66 @@
+from datetime import datetime
 import pytest
+import os
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from jira import JIRA
+from dotenv import load_dotenv
 
 
-@pytest.fixture
-def login_data():
-    return {
-        "email": "test123@example.com",  
-        "password": "Password123!"
-        }
+load_dotenv(override=True)
 
-@pytest.fixture
-def browser():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(10)
-    yield driver
-    driver.quit()
+JIRA_SERVER = os.getenv("JIRA_WEBSIDE")
+JIRA_USERNAME = os.getenv("JIRA_EMAIL")
+JIRA_API_KEY = os.getenv("JIRA_API_TOKEN")
 
+def pytest_addoption(parser):
+    parser.addoption("--languages", action="store", default="ru", help="Выберите язык")
+    parser.addoption("--jira", action="store_true", help="Включить интеграцию с Jira")
 
-
-def pytest_terminal_summary(terminalreporter):
-    passed = terminalreporter.stats.get('passed', [])
-    failed = terminalreporter.stats.get('failed', [])
-    
-    with open("report.txt", "w") as f:
-        if passed:
-            f.write("Пройденные тесты:\n")
-            for test in passed:
-                f.write(f"- {test.nodeid}\n")
-        if failed:
-            f.write("\nПроваленные тесты:\n")
-            for test in failed:
-                f.write(f"- {test.nodeid}\n")
-
-def pytest_addoption():
-    pass
-#фикстура
+@pytest.fixture(scope="session")
 def jira_client(request):
     if request.config.getoption("jira"):
-        pass
+        jira = JIRA(
+            server=JIRA_SERVER,
+            basic_auth=(JIRA_USERNAME, JIRA_API_KEY)
+        )
+        return jira
+
+
+@pytest.fixture
+def browser(request):
+    language = request.config.getoption("languages")
+    options = Options()
+    options.add_experimental_option("prefs", {"intl.accept_languages": language})
+    browser = webdriver.Chrome(options=options)
+    yield browser
+    browser.quit()
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == "call" and hasattr(report, "wasxfail") and report.outcome == "passed":
+        print("Типа всё то же самое")
+
+    if report.when == "call" and report.outcome == "failed":
+        if "browser" in item.funcargs:
+            browser = item.funcargs["browser"]
+            browser.save_screenshot("Скриншот_ошибки.png")
+
+        if "jira_client" in item.funcargs:
+            jira = item.funcargs["jira_client"]
+            if jira:
+                issue_type = jira.issue_types()
+                bug_type = issue_type[4]
+
+                issue_dict = {
+                    "project": {"key": "SL"},
+                    "summary": f"{item.name}",
+                    "description": f"Ошибка: {report.longreprtext}\n\nДата: {datetime.now()}",
+                    "issuetype": {"id": bug_type.id}
+                }
+
+                new_issue = jira.create_issue(fields=issue_dict)
+                jira.add_attachment(new_issue.key, "Скриншот_ошибки.png")

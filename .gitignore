@@ -5,3 +5,4 @@ __pycache__
 PageObject
 jira
 .venv
+.env
