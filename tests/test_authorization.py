@@ -22,7 +22,7 @@ def test_authorization(browser, user_data, jira_client):
     assert authorization_form.is_element_present(*MainPageAuthorization.MAIN_PAGE_TITLE_PRIVAT_ROOM), "Есть кнопка личный кабинет"
     
 
-def test_authorization_second(browser, user_data, jira_client):
+def test_authorization_broke(browser, user_data, jira_client):
     main_page = MainPage(browser)
     main_page.open()
     
