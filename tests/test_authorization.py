@@ -10,7 +10,18 @@ def user_data():
         "password": "0123456789"
     }
 
-def test_authorization(browser, user_data):
+def test_authorization(browser, user_data, jira_client):
+    main_page = MainPage(browser)
+    main_page.open()
+    
+    authorization_form = main_page.open_authorization_form()
+    authorization_form.fill_form(user_data)
+    authorization_form.push_button_login()
+
+    authorization_form.is_authorized()
+    
+
+def test_authorization_second(browser, user_data, jira_client):
     main_page = MainPage(browser)
     main_page.open()
     
@@ -20,8 +31,7 @@ def test_authorization(browser, user_data):
 
 
     try:
-        assert "личный кабинет"  in browser.page_source.lower()
+        assert "личный кабинет хахахахах"  in browser.page_source.lower()
     except AssertionError as e:
         print("у вас ошибка")
         raise e
-    

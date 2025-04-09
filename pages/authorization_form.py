@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from .base_page import BasePage
 from selenium.common.exceptions import TimeoutException
+from .locators import MainPageAuthorizationForm, MainPageAuthorization
 
 
 class AuthorizationForm(BasePage):
@@ -25,6 +26,9 @@ class AuthorizationForm(BasePage):
 				except TimeoutException:
 					print(f"Element {locator[1]} not found!")
 					raise
+
 	def push_button_login(self):
-		locator_button = "#modal_login > div > div > div.modal-body > form > div:nth-child(5) > button"
-		self.driver.find_element(By.CSS_SELECTOR, locator_button).click()
+		self.driver.find_element(*MainPageAuthorizationForm.BUTTON_AUTHORIZATION).click()
+
+	def is_authorized(self):
+		print(self.driver.find_element(*MainPageAuthorization.MAIN_PAGE_TITLE).text)
