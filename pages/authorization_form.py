@@ -3,7 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from .base_page import BasePage
 from selenium.common.exceptions import TimeoutException
 from .locators import MainPageAuthorizationForm, MainPageAuthorization
-
+import time
 
 class AuthorizationForm(BasePage):
 	def fill_form(self, user_data):
@@ -30,5 +30,6 @@ class AuthorizationForm(BasePage):
 	def push_button_login(self):
 		self.driver.find_element(*MainPageAuthorizationForm.BUTTON_AUTHORIZATION).click()
 
-	def is_authorized(self):
-		print(self.driver.find_element(*MainPageAuthorization.MAIN_PAGE_TITLE).text)
+	# def is_authorized(self):
+	# 	time.sleep(15)
+	# 	print(self.driver.find_element(*MainPageAuthorization.MAIN_PAGE_TITLE).text)

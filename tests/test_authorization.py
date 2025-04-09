@@ -1,5 +1,7 @@
 import pytest
 from ..pages.main_page import MainPage
+from ..pages.locators import MainPageAuthorization
+import time
 
 
 
@@ -7,7 +9,7 @@ from ..pages.main_page import MainPage
 def user_data():
     return {
         "email": f"test0123456789@example.com",
-        "password": "0123456789"
+        "password": "qwerty123"
     }
 
 def test_authorization(browser, user_data, jira_client):
@@ -17,8 +19,7 @@ def test_authorization(browser, user_data, jira_client):
     authorization_form = main_page.open_authorization_form()
     authorization_form.fill_form(user_data)
     authorization_form.push_button_login()
-
-    authorization_form.is_authorized()
+    assert authorization_form.is_element_present(*MainPageAuthorization.MAIN_PAGE_TITLE_PRIVAT_ROOM), "Есть кнопка личный кабинет"
     
 
 def test_authorization_second(browser, user_data, jira_client):
@@ -28,10 +29,4 @@ def test_authorization_second(browser, user_data, jira_client):
     authorization_form = main_page.open_authorization_form()
     authorization_form.fill_form(user_data)
     authorization_form.push_button_login()
-
-
-    try:
-        assert "личный кабинет хахахахах"  in browser.page_source.lower()
-    except AssertionError as e:
-        print("у вас ошибка")
-        raise e
+    assert authorization_form.is_element_present(*MainPageAuthorization.LOCATORS_BROKE), "Это тест никогда не будет работать"
