@@ -56,7 +56,7 @@ def pytest_runtest_makereport(item, call):
                 bug_type = issue_type[4]
 
                 issue_dict = {
-                    "project": {"key": "SL"},
+                    "project": {"key": "SEL"},
                     "summary": f"{item.name}",
                     "description": f"Ошибка: {report.longreprtext}\n\nДата: {datetime.now()}",
                     "issuetype": {"id": bug_type.id}
