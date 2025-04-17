@@ -9,3 +9,4 @@ class MainPageAuthorization():
 	ONLY_LOCATOR_TITLE = ("#header > div.header_top > div > div > div > div.login_links.hidden-xs > a:nth-child(1) > span")
 	MAIN_PAGE_TITLE_PRIVAT_ROOM = (By.XPATH, "//span[contains(text(), 'Личный кабинет')]")
 	LOCATORS_BROKE = (By.XPATH, "//span[contains(text(), 'Личный кабинет аххаххахаха')]")
+	LOCATOR_SEARCH = (By.XPATH, "//span[contains(text(), 'Личный кабинет аххаххахаха')]")

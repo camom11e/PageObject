@@ -1,0 +1,18 @@
+[server]
+port = 7777
+
+[node]
+max-sessions = 10
+detect-drivers = false
+
+[[node.driver-configuration]]
+max-sessions = 4
+display-name = "Firefox"
+stereotype = { browserName = "firefox"}
+
+
+
+[[node.driver-configuration]]
+max-sessions = 4
+display-name = "Edge"
+stereotype = { browserName = "MicrosoftEdge"}

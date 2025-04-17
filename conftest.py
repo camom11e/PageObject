@@ -1,17 +1,47 @@
+import pytest
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
 from datetime import datetime
 import pytest
 import os
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from jira import JIRA
 from dotenv import load_dotenv
-
 
 load_dotenv(override=True)
 
 JIRA_SERVER = os.getenv("JIRA_WEBSIDE")
 JIRA_USERNAME = os.getenv("JIRA_EMAIL")
 JIRA_API_KEY = os.getenv("JIRA_API_TOKEN")
+
+@pytest.fixture
+def browser(request):
+    hub_url = "http://169.254.163.249:5555/wd/hub"
+    param = request.param if hasattr(request, "param") else "chrome"
+    if param == "chrome":
+        language = request.config.getoption("languages")
+        options = ChromeOptions()
+        options.page_load_strategy = 'normal'
+        # 'normal' для обычной загрузки страницы
+        # 'eager'  для не ожидает загрузки всей странции 
+        # 'none'   для отсутствия ожидания 
+        options.add_experimental_option("prefs", {"intl.accept_languages": language})
+    elif param == "firefox":
+        options = FirefoxOptions()
+    else:
+        options = EdgeOptions()
+
+    browser = webdriver.Remote(
+        command_executor=hub_url,
+        options=options
+    )
+
+    yield browser
+
+    browser.quit()
+
 
 def pytest_addoption(parser):
     parser.addoption("--languages", action="store", default="ru", help="Выберите язык")
@@ -27,24 +57,12 @@ def jira_client(request):
         return jira
 
 
-@pytest.fixture
-def browser(request):
-    language = request.config.getoption("languages")
-    options = Options()
-    options.add_experimental_option("prefs", {"intl.accept_languages": language})
-    browser = webdriver.Chrome(options=options)
-    yield browser
-    browser.quit()
-
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
 
-    if report.when == "call" and hasattr(report, "wasxfail") and report.outcome == "passed":
-        print("Типа всё то же самое")
-
-    if report.when == "call" and report.outcome == "failed":
+    if report.when == "call" and (report.outcome == "failed" or (hasattr(report, "wasxfail") and report.outcome == "passed")):
         if "browser" in item.funcargs:
             browser = item.funcargs["browser"]
             browser.save_screenshot("Скриншот_ошибки.png")
