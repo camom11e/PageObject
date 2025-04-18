@@ -9,7 +9,7 @@ user_data = {
         "password": "qwerty123"
     }
 
-
+@pytest.mark.parametrize("browser", ["chrome", "firefox"], indirect=True)
 def test_authorization(browser, jira_client):
     main_page = Main_Page(browser)
     main_page.open()
