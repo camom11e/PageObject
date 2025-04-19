@@ -13,19 +13,14 @@ class Main_Page(BasePage):
         register_btn = self.wait.until(
             EC.presence_of_element_located(MPL.REGISTRATION_BUTTON)
         )
-        self.execute_script("arguments[0].scrollIntoView(true);", register_btn)
         register_btn.click()
-        # elem = self.driver.find_element(*MPL.REGISTRATION_BUTTON)/
-        # text = elem.text
-        # self.execute_script("arguments[0].click();", register_btn)
         return RegistrationForm(self.driver)
     
     def open_authorization_form(self):
         auth_btn = self.wait.until(
             EC.presence_of_element_located(MPL.AUTHORIZATION_BUTTON)
         )
-        self.execute_script("arguments[0].scrollIntoView(true);", auth_btn)
-        self.execute_script("arguments[0].click();", auth_btn)
+        auth_btn.click()
         return AuthorizationForm(self.driver)
     
 
@@ -39,14 +34,7 @@ class AuthorizationForm(Main_Page):
 		for locator, value in fields.items():
 				print(locator, ":", value)
 				try:
-					element = self.wait.until(
-						EC.visibility_of_element_located(locator)
-					)
-					self.driver.execute_script(
-						"arguments[0].value = arguments[1];", 
-						element, 
-						value
-					)
+					self.wait.until(EC.visibility_of_element_located(locator)).send_keys(value)
 					print(f"Field {locator[1]} filled with: {value}")
 				except TimeoutException:
 					print(f"Element {locator[1]} not found!")
@@ -74,14 +62,7 @@ class RegistrationForm(Main_Page):
         for locator, value in fields.items():
             print(locator,":",value     )
             try:
-                element = self.wait.until(
-                    EC.visibility_of_element_located(locator)
-                )
-                self.driver.execute_script(
-                    "arguments[0].value = arguments[1];", 
-                    element, 
-                    value
-                )
+                self.wait.until(EC.visibility_of_element_located(locator)).send_keys(value)
                 print(f"Field {locator[1]} filled with: {value}")
             except TimeoutException:
                 print(f"Element {locator[1]} not found!")
