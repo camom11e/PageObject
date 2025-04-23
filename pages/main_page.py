@@ -6,6 +6,7 @@ from .locators import MainPageAuthorizationForm as MPAUF , MainPageLocators as M
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from .base_page import BasePage
+from .my_account_page import My_Account_Page
 from selenium.common.exceptions import TimeoutException
 
 class Main_Page(BasePage):
@@ -48,7 +49,7 @@ class AuthorizationForm(Main_Page):
 	# 	print(self.driver.find_element(*MainPageAuthorization.MAIN_PAGE_TITLE).text)
  
  
-class RegistrationForm(Main_Page):
+class RegistrationForm(BasePage):
     def fill_form(self, user_data):
         fields = {
             MPR.FIRST_NAME_INPUT_FIELD: user_data["first_name"],
@@ -70,6 +71,7 @@ class RegistrationForm(Main_Page):
     def push_button_registration(self):
         print(self.driver.find_element(*MPR.BUTTON_REGISTRATION).text)
         self.driver.find_element(*MPR.BUTTON_REGISTRATION).click()
+        return My_Account_Page(self.driver)
             
         
     # def is_success_message_present(self):

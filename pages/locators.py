@@ -26,8 +26,10 @@ class MainPageRegistration():
     REPEAT_PASSWORD_NAME_INPUT_FIELD = (By.CSS_SELECTOR, "input[name='repeat_password'][type='password'][class='form-control required']")
     BUTTON_REGISTRATION = (By.CSS_SELECTOR,"#modal_register > div > div > div.modal-body > form > div:nth-child(12) > button > div")
     
-class RegistarationPage():
+class MyAccountPage():
     FILD_EMAIL = (By.CSS_SELECTOR,"#middle > div > div > div > div:nth-child(2) > div > div > div.col-lg-9.col-md-8.col-sm-12.col-xs-12 > div > div.dashboard > div.profile_info > div.email > span")
+    FILD_PHONE_NUMBERS = (By.CSS_SELECTOR,"#middle > div > div > div > div:nth-child(2) > div > div > div.col-lg-9.col-md-8.col-sm-12.col-xs-12 > div > div.dashboard > div.profile_info > div.email > span" )
+    #  test1745400594@example.com
      
  
  

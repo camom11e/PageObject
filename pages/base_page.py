@@ -16,8 +16,6 @@ class BasePage:
             return self.driver.execute_script(script, element)
         return self.driver.execute_script(script)
     
-
-
     def is_element_present(self, how, what):
         try:
             self.driver.find_element(how, what)

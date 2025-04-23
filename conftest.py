@@ -18,7 +18,7 @@ JIRA_API_KEY = os.getenv("JIRA_API_TOKEN")
 
 @pytest.fixture
 def browser(request):
-    hub_url = "http://192.168.0.100:5555/wd/hub"
+    hub_url = "http://10.11.23.230:5555/wd/hub"
     param = request.param if hasattr(request, "param") else "chrome"
     if param == "chrome":
         language = request.config.getoption("languages")

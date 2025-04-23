@@ -1,7 +1,7 @@
 # import pytest
 # from selenium import webdriver
 from ..pages.main_page import Main_Page
-from ..pages.locators import MainPageRegistration, RegistarationPage
+from ..pages.locators import MainPageRegistration, MyAccountPage
 from ..pages.main_page import RegistrationForm
 import time
 import pytest
@@ -22,8 +22,9 @@ def test_registration(browser, jira_client):
     main_page.open()
     registration_form = main_page.open_registration_form()
     registration_form.fill_form(user_data)
-    registration_form.push_button_registration()
-    time.sleep(1000)
+    my_account_page = registration_form.push_button_registration()
+    assert my_account_page.return_be_email_in_profile() == user_data["email"]
+    time.sleep(5)
     # assert RE.is_element_present(*MainPageAuthorization.MAIN_PAGE_TITLE_PRIVAT_ROOM), "Есть кнопка личный кабинет"
     # assert registration_form.is_element_present(*RegistarationPage.FILD_EMAIL).getText()
     
