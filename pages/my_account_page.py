@@ -1,14 +1,7 @@
 from .base_page import BasePage
 from .locators import  MyAccountPage as MAP
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from .base_page import BasePage
 
-
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from .base_page import BasePage
 
 
 class My_Account_Page(BasePage):

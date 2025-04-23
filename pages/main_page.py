@@ -1,13 +1,11 @@
 from .base_page import BasePage
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from .locators import MainPageAuthorizationForm as MPAUF , MainPageLocators as MPL, MainPageRegistration as MPR
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from .base_page import BasePage
 from .my_account_page import My_Account_Page
 from selenium.common.exceptions import TimeoutException
+from .product_page import Product_page
+import time
 
 class Main_Page(BasePage):
     def open_registration_form(self):
@@ -24,8 +22,23 @@ class Main_Page(BasePage):
         auth_btn.click()
         return AuthorizationForm(self.driver)
     
-
-class AuthorizationForm(Main_Page):
+    def open_search(self):
+        input_search = self.wait.until(
+            EC.presence_of_element_located(MPL.SEARCH_BUTTON)
+        )
+        input_search.click()
+        return SearchForm(self.driver)
+        
+class SearchForm(BasePage):
+    def inputInSearch(self, value):
+        self.wait.until(EC.visibility_of_element_located(MPL.SEARCH_FIELD)).send_keys(value)
+        self.driver.find_element(*MPL.SEARCH_BUTTON_IN_SEARCH_BUTTON).click()
+        return Product_page(BasePage)
+        
+        
+    
+    
+class AuthorizationForm(BasePage):
 	def fill_form(self, user_data):
 		fields = {
             MPAUF.EMAIL_INPUT_FIELD : user_data["email"],
@@ -61,7 +74,7 @@ class RegistrationForm(BasePage):
             MPR.REPEAT_PASSWORD_NAME_INPUT_FIELD: user_data["repeat_password"]
         }
         for locator, value in fields.items():
-            print(locator,":",value     )
+            print(locator,":",value)
             try:
                 self.wait.until(EC.visibility_of_element_located(locator)).send_keys(value)
                 print(f"Field {locator[1]} filled with: {value}")
@@ -69,7 +82,6 @@ class RegistrationForm(BasePage):
                 print(f"Element {locator[1]} not found!")
                 raise
     def push_button_registration(self):
-        print(self.driver.find_element(*MPR.BUTTON_REGISTRATION).text)
         self.driver.find_element(*MPR.BUTTON_REGISTRATION).click()
         return My_Account_Page(self.driver)
             
@@ -80,4 +92,5 @@ class RegistrationForm(BasePage):
     #         return True
     #     except:
     #         return False
-
+    
+    

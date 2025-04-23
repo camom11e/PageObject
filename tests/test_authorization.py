@@ -1,8 +1,6 @@
 import pytest
-from ..pages.main_page import AuthorizationForm
 from ..pages.main_page import Main_Page
 from ..pages.locators import MainPageAuthorization
-import time
 
 user_data = {
         "email": f"test0123456789@example.com",
